@@ -1,21 +1,31 @@
 #!/bin/bash
-
-# Exit on error
 set -e
 
-echo "🔧 Starting Python 3 installation..."
+echo "🔧 Starting Python 3 installation (non-root)..."
 
-# Update package list
-sudo apt update -y
+# Detect OS and install using user-level methods
+if command -v apt-get >/dev/null 2>&1; then
+    echo "❌ Cannot install system-wide Python without root privileges on apt-based system."
+    echo "👉 Consider pre-installing Python or using a Docker image with Python pre-installed."
+    exit 1
+else
+    echo "⚠️ Unsupported or non-root environment. Installing Python locally using pyenv..."
 
-# Install Python 3 and pip
-sudo apt install -y python3 python3-pip
+    # Install dependencies for pyenv (if possible)
+    curl https://pyenv.run | bash
 
-# Check Python installation
-echo "✅ Python version:"
-python3 --version
+    # Add pyenv to path for current session
+    export PATH="$HOME/.pyenv/bin:$PATH"
+    eval "$(pyenv init --path)"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 
-echo "✅ Pip version:"
-pip3 --version
+    # Install Python via pyenv
+    pyenv install 3.11.9
+    pyenv global 3.11.9
 
-echo "🎉 Python installation completed successfully!"
+    echo "✅ Python installed via pyenv:"
+    python --version
+fi
+
+echo "🎉 Python setup completed!"
