@@ -1,4 +1,8 @@
 # age eligibility
+import os
+
+age = int(os.getenv("AGE", "0"))
+print(f"Your age is: {age}")
 
 age = int(input("enter your age: "))
 
