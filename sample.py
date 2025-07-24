@@ -1,10 +1,10 @@
 # age eligibility
 import os
 
-age = int(os.getenv("AGE", "0"))
+age = int(os.getenv("age", "0"))
 print(f"Your age is: {age}")
 
-age = int(input("enter your age: "))
+# age = int(input("enter your age: "))
 
 if age<= 0:
     print("you haven't born yet :")
